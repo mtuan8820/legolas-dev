@@ -2,7 +2,7 @@
   <aside class="fixed top-11.25 left-0 h-full w-72">
     <div class="h-full p-8 flex flex-col items-center gap-8">
       <div class="text-center">
-        <h2 class="text-[1.4em]">Vu Hoang Minh Tuan</h2>
+        <h2 class="text-[1.4em]">Minh Tuan</h2>
         <p class="text-[22px] leading-normal text-[#aaa] font-extrabold">An Engineer</p>
       </div>
 
