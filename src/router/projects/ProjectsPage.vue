@@ -30,7 +30,7 @@ onMounted(() => fetchProjects())
 </script>
 
 <template>
-  <div class="projects-page">
+  <div>
     <h1>Projects</h1>
     <p class="mt-2.5">These are some of the projects I have worked on.</p>
     <div v-if="loading" class="mt-2.5">Loading projects...</div>
@@ -39,8 +39,8 @@ onMounted(() => fetchProjects())
       <button @click="fetchProjects">Try later</button>
     </div>
 
-    <ul v-else-if="projects.length > 0" class="projects-list">
-      <li v-for="project in projects" :key="project.id" class="">
+    <ul v-else-if="projects.length > 0">
+      <li v-for="project in projects" :key="project.id">
         <hr class="mb-2.5 mt-7.5" />
 
         <div class="text-justify">
