@@ -40,7 +40,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="loading" class="mt-2.5">Loading blog...</div>
+  <div v-if="loading" class="mt-2.5"><p>Loading blog...</p></div>
 
   <div v-else-if="error" class="text-red-600">Error: {{ error }}</div>
 

@@ -101,7 +101,7 @@ watch([() => route.params.page, () => route.query.tag], loadPage)
   <div>
     <h1>{{ title }}</h1>
     <hr class="mb-2.5 mt-7.5 bg-[#eee] border-0 h-px" />
-    <div v-if="loading" class="mt-2.5">Loading {{ title.toLowerCase() }}...</div>
+    <p v-if="loading">Loading {{ title.toLowerCase() }}...</p>
 
     <div v-if="error" class="text-red-600">Error: {{ error }}</div>
 

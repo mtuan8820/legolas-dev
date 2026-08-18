@@ -32,8 +32,8 @@ onMounted(() => fetchProjects())
 <template>
   <div>
     <h1>Projects</h1>
-    <p class="mt-2.5">These are some of the projects I have worked on.</p>
-    <div v-if="loading" class="mt-2.5">Loading projects...</div>
+    <p>These are some of the projects I have worked on.</p>
+    <p v-if="loading" class="mt-2.5">Loading projects...</p>
     <div v-if="error" class="error">
       Error: {{ error }}
       <button @click="fetchProjects">Try later</button>
