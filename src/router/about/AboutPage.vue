@@ -12,8 +12,8 @@ async function copyEmail() {
 }
 </script>
 <template>
-  <section>
-    <h2>Hi, I'm Tuan</h2>
+  <div>
+    <h1>Hi, I'm Tuan</h1>
 
     <p>
       I'm an engineer based in Ho Chi Minh, Viet Nam.<br />
@@ -31,9 +31,9 @@ async function copyEmail() {
 
       I scored 865/990 on the TOEIC Listening & Reading and passed the JLPT N3 in 2026.
     </p>
-  </section>
+  </div>
 
-  <section>
+  <div>
     <h3>Now</h3>
     <ul class="list-disc list-inside">
       <li>Learning Rust - recently built a regex engine from scratch.</li>
@@ -43,9 +43,9 @@ async function copyEmail() {
         I learned recently.
       </li>
     </ul>
-  </section>
+  </div>
 
-  <section>
+  <div>
     <h3>Contact</h3>
     <p class="mb-0!">My resume can be downloaded at these links:</p>
     <ul class="list-disc list-inside">
@@ -65,5 +65,5 @@ async function copyEmail() {
       You can contact me via my email at
       <span class="underline cursor-pointer" @click.prevent="copyEmail"> mtuan9517@gmail.com </span>
     </p>
-  </section>
+  </div>
 </template>

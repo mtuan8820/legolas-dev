@@ -1,9 +1,9 @@
 <template>
-  <aside class="fixed top-11.25 left-0 h-full w-72">
-    <div class="h-full p-8 flex flex-col items-center gap-8">
+  <aside class="fixed top-11.25 pb-11.25 left-0 h-full w-[25vw]">
+    <div class="h-full w-full flex flex-col items-center gap-8">
       <div class="text-center">
         <h2 class="text-[1.4em] font-normal!">Legolas</h2>
-        <h3 class="text-[#888]! font-extrabold!">Backend Engineer</h3>
+        <h3 class="text-[#555]! font-extrabold!">Backend Engineer</h3>
       </div>
 
       <!-- Social Links -->
@@ -65,7 +65,8 @@
         </a>
       </div>
 
-      <nav class="w-full flex flex-1 flex-col px-2">
+      <!-- Nav links -->
+      <nav class="w-[15vw] flex flex-1 flex-col px-2">
         <RouterLink class="router-link" to="/blogs">Blogs</RouterLink>
         <RouterLink class="router-link" to="/">About Me</RouterLink>
         <RouterLink class="router-link" to="/projects">Projects</RouterLink>

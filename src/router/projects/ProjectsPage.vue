@@ -33,7 +33,7 @@ onMounted(() => fetchProjects())
   <div>
     <h1>Projects</h1>
     <p>These are some of the projects I have worked on.</p>
-    <p v-if="loading" class="mt-2.5">Loading projects...</p>
+    <p v-if="loading" class="mt-2.5">Loading...</p>
     <div v-if="error" class="error">
       Error: {{ error }}
       <button @click="fetchProjects">Try later</button>
@@ -43,7 +43,7 @@ onMounted(() => fetchProjects())
       <li v-for="project in projects" :key="project.id">
         <hr class="mb-2.5 mt-7.5" />
 
-        <div class="text-justify">
+        <div class="text-left hyphens-auto">
           <div class="float-left mr-2 mb-1.25 text-2xl font-bold max-w-[25%]">
             <a
               v-if="project.homepage_url"

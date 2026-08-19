@@ -40,9 +40,17 @@ html {
   font-family: 'Caslon';
 }
 
+main {
+  width: 50vw;
+  min-width: var(--bodyMinWidth);
+  margin: auto;
+}
+
 h1 {
   font-size: 2em;
   font-weight: 700;
+  margin-top: var(--note05);
+  margin-bottom: var(--note00);
 }
 
 h2 {
@@ -65,11 +73,20 @@ h3 {
   color: #17181b;
 }
 
+h4 {
+  font-family: 'Caslon';
+  font-style: normal;
+  font-weight: normal;
+  text-align: left;
+  font-size: var(--note01);
+  line-height: var(--note05);
+  color: #555;
+}
+
 .router-link {
   font-family: 'Caslon';
-  font-size: var(--note01);
-  line-height: var(--note06);
-
+  font-size: var(--note02);
+  line-height: var(--note04);
   text-align: center;
   border-bottom: 1px solid lightgray;
   padding: 16px;
@@ -78,11 +95,12 @@ h3 {
 p {
   font-family: 'Caslon';
   font-weight: 100;
-  text-align: justify;
   font-size: var(--note02);
   line-height: var(--note04);
   margin-bottom: var(--note06);
   color: #17181b;
+  hyphens: auto;
+  text-align: left;
 }
 
 li {

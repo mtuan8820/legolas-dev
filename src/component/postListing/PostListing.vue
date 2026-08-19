@@ -13,7 +13,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  pageSize: 8,
+  pageSize: 8, //number of posts (blog/til) per page
   showExcerpt: false,
 })
 
@@ -46,6 +46,17 @@ function formatDate(date: string | undefined): string {
   return datetimeFormatter.format(new Date(date))
 }
 
+function resolveDetailPath(item: ContentItem): string | undefined {
+  if (!props.detailRoute) return undefined
+  if (props.detailRoute.includes(':slug')) {
+    return item.slug ? props.detailRoute.replace(':slug', item.slug) : undefined
+  }
+  if (props.detailRoute.includes(':id')) {
+    return item.id !== undefined ? props.detailRoute.replace(':id', String(item.id)) : undefined
+  }
+  return undefined
+}
+
 async function fetchContent(params: { page: number; tag?: string }) {
   const startOffset = (params.page - 1) * props.pageSize
   const endOffset = params.page * props.pageSize - 1
@@ -56,7 +67,7 @@ async function fetchContent(params: { page: number; tag?: string }) {
     if (props.tableName === 'blogs') {
       selectFields += ', slug, excerpt'
     } else if (props.tableName === 'til') {
-      selectFields += ', summary'
+      selectFields += ', id, summary'
     }
 
     let query = supabase
@@ -87,6 +98,17 @@ async function fetchContent(params: { page: number; tag?: string }) {
 const route = useRoute()
 const selectedTag = computed(() => (route.query.tag as string) || undefined)
 
+// Strips any existing "/page/N" suffix so we always build the target link
+// from a clean base path, regardless of whether the current route has one.
+function basePath(path: string): string {
+  return path.replace(/\/page\/\d+$/, '')
+}
+
+function pageLink(page: number): string {
+  const base = basePath(route.path)
+  return page > 1 ? `${base}/page/${page}` : base
+}
+
 const loadPage = () => {
   loading.value = true
   error.value = null
@@ -99,19 +121,17 @@ watch([() => route.params.page, () => route.query.tag], loadPage)
 
 <template>
   <div>
-    <h1>{{ title }}</h1>
-    <hr class="mb-2.5 mt-7.5 bg-[#eee] border-0 h-px" />
+    <h1 v-if="selectedTag">Tag: {{ selectedTag }}</h1>
+    <h1 v-else>{{ title }}</h1>
+    <h4 class="mb-0! mt7.5!">POSTS</h4>
+    <hr class="mb-2.5 bg-[black] border-0 h-px" />
     <p v-if="loading">Loading {{ title.toLowerCase() }}...</p>
-
     <div v-if="error" class="text-red-600">Error: {{ error }}</div>
 
     <ul v-else-if="items.length > 0">
       <li v-for="item in items" :key="item.title" class="mt-4">
         <h2>
-          <RouterLink
-            v-if="detailRoute && item.slug"
-            :to="{ path: detailRoute.replace(':slug', item.slug) }"
-          >
+          <RouterLink v-if="resolveDetailPath(item)" :to="{ path: resolveDetailPath(item)! }">
             {{
               tableName == 'til'
                 ? 'TIL: ' + formatDate(item.updated_at) + ': ' + item.title
@@ -134,7 +154,7 @@ watch([() => route.params.page, () => route.query.tag], loadPage)
             <RouterLink
               v-for="tag in item.tags"
               :key="tag"
-              :to="{ path: route.path, query: { tag } }"
+              :to="{ path: basePath(route.path), query: { tag } }"
               class="bg-[#e3e3e3] px-5 py-1.25 text-sm rounded-xs underline hover:bg-[#d0d0d0] transition"
             >
               {{ tag }}
@@ -154,7 +174,7 @@ watch([() => route.params.page, () => route.query.tag], loadPage)
           class="underline"
           v-if="pageIndex > 1"
           :to="{
-            path: route.path.replace(`/page/${pageIndex}`, `/page/${pageIndex - 1}`),
+            path: pageLink(pageIndex - 1),
             query: selectedTag ? { tag: selectedTag } : {},
           }"
         >
@@ -164,7 +184,7 @@ watch([() => route.params.page, () => route.query.tag], loadPage)
           class="underline"
           v-if="pageIndex < totalPage"
           :to="{
-            path: route.path.replace(`/page/${pageIndex}`, `/page/${pageIndex + 1}`),
+            path: pageLink(pageIndex + 1),
             query: selectedTag ? { tag: selectedTag } : {},
           }"
         >

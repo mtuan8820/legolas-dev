@@ -7,3 +7,4 @@ const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 export const supabase = createClient<Database>(supabaseUrl, supabaseKey);
 export type Project = Database['public']['Tables']['projects']['Row'];
 export type Blog = Database['public']['Tables']['blogs']['Row'];
+export type Til = Database['public']['Tables']['til']['Row'];

@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { supabase, type Blog } from '@/util/supabase'
+import { supabase, type Til } from '@/util/supabase'
 import MarkdownIt from 'markdown-it'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
 
-const blog = ref<Blog | null>(null)
+const til = ref<Til | null>(null)
 const error = ref<string | null>(null)
 const loading = ref(true)
 
@@ -21,18 +21,18 @@ const md = new MarkdownIt({ html: false, linkify: true })
 onMounted(async () => {
   try {
     const { data, error: queryError } = await supabase
-      .from('blogs')
+      .from('til')
       .select('*')
-      .eq('slug', route.params.slug as string)
+      .eq('id', Number(route.params.id))
       .single()
 
     if (queryError) {
       error.value = queryError.message
     } else if (data) {
-      blog.value = data as Blog
+      til.value = data as Til
     }
   } catch (err) {
-    error.value = err instanceof Error ? err.message : 'Failed to load blog'
+    error.value = err instanceof Error ? err.message : 'Failed to load TIL entry'
   } finally {
     loading.value = false
   }
@@ -44,23 +44,23 @@ onMounted(async () => {
 
   <div v-else-if="error" class="text-red-600">Error: {{ error }}</div>
 
-  <div v-else-if="blog">
-    <h1>{{ blog.title }}</h1>
+  <div v-else-if="til">
+    <h1>{{ til.title }}</h1>
 
     <div class="flex justify-between mt-4">
       <!-- Datetime -->
       <div class="text-[#555] font-extrabold">
-        {{ datetimeFormatter.format(new Date(blog.updated_at ?? '')) }}
+        {{ datetimeFormatter.format(new Date(til.updated_at ?? til.created_at)) }}
       </div>
 
       <!-- Tags -->
-      <div v-if="blog.tags" class="flex gap-2">
-        <span v-for="tag in blog.tags" :key="tag" class="bg-[#e3e3e3] px-3 py-1 text-sm rounded">
+      <div v-if="til.tags" class="flex gap-2">
+        <span v-for="tag in til.tags" :key="tag" class="bg-[#e3e3e3] px-3 py-1 text-sm rounded">
           {{ tag }}
         </span>
       </div>
     </div>
 
-    <div class="mt-6" v-html="md.render(blog.content)"></div>
+    <div class="mt-6" v-html="md.render(til.content)"></div>
   </div>
 </template>
