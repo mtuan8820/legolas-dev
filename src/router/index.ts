@@ -11,10 +11,10 @@ const routes = [
   { path: '/projects', component: ProjectsPage },
   { path: '/blogs', component: BlogsPage },
   { path: '/blogs/page/:page', component: BlogsPage, props: true },
-  { path: '/blogs/:slug', component: BlogDetailPage, props: true },
+  { path: '/blogs/:slug', component: BlogDetailPage, props: true, meta: { hideSidebar: true } },
   { path: '/til', component: TilPage },
   { path: '/til/page/:page', component: TilPage, props: true },
-  { path: '/til/:id', component: TilDetailPage, props: true },
+  { path: '/til/:id', component: TilDetailPage, props: true, meta: { hideSidebar: true } },
 ]
 
 const router = createRouter({

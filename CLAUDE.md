@@ -25,10 +25,6 @@ Vue 3 + TypeScript SPA scaffolded from `create-vue`, with Supabase as the backen
 - `src/util/supabase.ts` exports a single shared `supabase` client built from `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY`. Components fetch data directly (no store/data-access layer yet).
 - Persistent sidebar navigation with hardcoded social links and portfolio branding.
 
-### Known gap
-
-`src/util/supabase.ts` imports `@supabase/supabase-js`, but that package is **neither in `package.json` nor installed**. Type-check and build will fail until `npm install @supabase/supabase-js` is run and the dependency committed.
-
 ### Database Schema
 
 Supabase table schemas (SQL) are documented in `.claude/supabase-schema.md` .
@@ -37,13 +33,13 @@ Supabase table schemas (SQL) are documented in `.claude/supabase-schema.md` .
 
 ### Portfolio Pages & Routes
 
-| Page | Route | Content | Source |
-|------|-------|---------|--------|
-| About | `/` | Bio and portfolio info | Hardcoded in component |
-| Projects | `/projects` | Listing of projects with descriptions & links | `projects` table |
-| Blogs | `/blogs` | Blog post listing | `blogs` table |
-| Blog Post | `/blogs/:slug` | Full blog post (markdown rendered) | `blogs` table |
-| Today I Learned | `/til` | TIL entries listing | `til` table |
+| Page            | Route          | Content                                       | Source                 |
+| --------------- | -------------- | --------------------------------------------- | ---------------------- |
+| About           | `/`            | Bio and portfolio info                        | Hardcoded in component |
+| Projects        | `/projects`    | Listing of projects with descriptions & links | `projects` table       |
+| Blogs           | `/blogs`       | Blog post listing                             | `blogs` table          |
+| Blog Post       | `/blogs/:slug` | Full blog post (markdown rendered)            | `blogs` table          |
+| Today I Learned | `/til`         | TIL entries listing                           | `til` table            |
 
 ### Data Model & Content Format
 
@@ -58,6 +54,7 @@ Supabase table schemas (SQL) are documented in `.claude/supabase-schema.md` .
 Vite env vars live in `.env.local` (gitignored via the `*.local` pattern). Only `VITE_`-prefixed vars reach client code. `env.d.ts` just references `vite/client`; add an `ImportMetaEnv` interface there if you want typed env access.
 
 **Required env vars for Supabase:**
+
 - `VITE_SUPABASE_URL` — Supabase project URL
 - `VITE_SUPABASE_PUBLISHABLE_KEY` — Supabase public anon key
 
