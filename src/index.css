@@ -112,18 +112,54 @@ ul {
 
 code {
   font-family: 'DMMono';
+  font-size: 0.85em;
+  color: #282e39;
+  background-color: #e9eaec;
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background-color: #282e39;
+  border-radius: 8px;
+  padding: var(--note01);
+  margin: 0;
+  margin-bottom: var(--note00);
+  overflow-x: auto;
+}
+
+pre code {
   font-size: var(--note00);
   line-height: var(--note02);
   color: #f0f0f0;
-  background-color: #282e39;
-  display: block;
+  background-color: transparent;
   padding: 0;
-  padding-left: var(--note01);
-  padding-bottom: var(--note01);
-  padding-top: var(--note01);
-  margin: 0;
-  margin-bottom: var(--note00);
-  border-radius: 8px;
+  border-radius: 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--note06);
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px 12px;
+  text-align: left;
+  font-family: 'Caslon';
+  font-size: var(--note02);
+  line-height: var(--note04);
+}
+
+th {
+  font-weight: 700;
+  background-color: #f2f2f2;
+}
+
+thead {
+  text-align: left;
 }
 
 blockquote::before {

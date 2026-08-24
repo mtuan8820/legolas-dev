@@ -73,7 +73,7 @@
         <RouterLink class="router-link" to="/til">Today I Learned</RouterLink>
       </nav>
 
-      <div class="mb-11.25">© 2026 Legolas</div>
+      <div class="mb-11.25">©&nbsp;2026 Legolas</div>
     </div>
   </aside>
 </template>

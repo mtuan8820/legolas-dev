@@ -16,7 +16,7 @@ const datetimeFormatter = new Intl.DateTimeFormat('en-US', {
   year: 'numeric',
 })
 
-const md = new MarkdownIt({ html: false, linkify: true })
+const md = new MarkdownIt({ html: true, linkify: true })
 
 onMounted(async () => {
   try {

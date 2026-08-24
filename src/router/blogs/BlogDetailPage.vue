@@ -16,7 +16,7 @@ const datetimeFormatter = new Intl.DateTimeFormat('en-US', {
   year: 'numeric',
 })
 
-const md = new MarkdownIt({ html: false, linkify: true })
+const md = new MarkdownIt({ html: true, linkify: true })
 
 onMounted(async () => {
   try {
@@ -115,6 +115,10 @@ h1 {
   margin-bottom: var(--note00);
 }
 
+.content :deep(p:has(+ ul)) {
+  margin-bottom: 0;
+}
+
 .content :deep(hr:has(+ h3)) {
   margin-top: 2em;
   border: none;
@@ -154,5 +158,10 @@ h1 {
 
 .content :deep(li) {
   line-height: 1.618;
+}
+
+.content :deep(li > p) {
+  display: inline;
+  margin: 0;
 }
 </style>
