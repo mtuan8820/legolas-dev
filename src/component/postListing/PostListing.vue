@@ -46,6 +46,12 @@ function formatDate(date: string | undefined): string {
   return datetimeFormatter.format(new Date(date))
 }
 
+function displayTitle(item: ContentItem): string {
+  return props.tableName === 'til'
+    ? 'TIL: ' + formatDate(item.updated_at) + ': ' + item.title
+    : item.title
+}
+
 function resolveDetailPath(item: ContentItem): string | undefined {
   if (!props.detailRoute) return undefined
   if (props.detailRoute.includes(':slug')) {
@@ -131,18 +137,14 @@ watch([() => route.params.page, () => route.query.tag], loadPage)
     <ul v-else-if="items.length > 0">
       <li v-for="item in items" :key="item.title" class="mt-4">
         <h2>
-          <RouterLink v-if="resolveDetailPath(item)" :to="{ path: resolveDetailPath(item)! }">
-            {{
-              tableName == 'til'
-                ? 'TIL: ' + formatDate(item.updated_at) + ': ' + item.title
-                : item.title + '...'
-            }}
+          <RouterLink
+            v-if="resolveDetailPath(item)"
+            :to="{ path: resolveDetailPath(item)! }"
+            class="block truncate"
+          >
+            {{ displayTitle(item) }}
           </RouterLink>
-          <span v-else>{{
-            tableName == 'til'
-              ? 'TIL: ' + formatDate(item.updated_at) + ': ' + item.title
-              : item.title + '...'
-          }}</span>
+          <span v-else class="block truncate">{{ displayTitle(item) }}</span>
         </h2>
 
         <div class="flex justify-between">

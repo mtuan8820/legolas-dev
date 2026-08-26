@@ -28,7 +28,6 @@ defineProps<{
       <RouterLink v-if="$props.nextPostLink" :to="$props.nextPostLink"
         >{{ nextPostTitle }} →</RouterLink
       >
-      <!-- TODO: this should be a blank block to take space here -->
     </div>
   </nav>
 </template>
