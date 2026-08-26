@@ -12,7 +12,9 @@ const error = ref<string | null>(null)
 const loading = ref(true)
 
 const nextId = ref<number | null>(null)
+const nextTitle = ref<string | null>(null)
 const prevId = ref<number | null>(null)
+const prevTitle = ref<string | null>(null)
 
 const datetimeFormatter = new Intl.DateTimeFormat('en-US', {
   month: 'short',
@@ -27,7 +29,9 @@ async function loadTil() {
   error.value = null
   til.value = null
   nextId.value = null
+  nextTitle.value = null
   prevId.value = null
+  prevTitle.value = null
 
   try {
     const { data, error: queryError } = await supabase
@@ -43,7 +47,7 @@ async function loadTil() {
 
       const { data: dataNext, error: queryNextError } = await supabase
         .from('til')
-        .select('id')
+        .select('id, title')
         .gt('created_at', til.value.created_at)
         .order('created_at', { ascending: true })
         .limit(1)
@@ -51,11 +55,14 @@ async function loadTil() {
 
       if (queryNextError) {
         // TODO: think about how to handle this
-      } else if (dataNext) nextId.value = dataNext.id
+      } else if (dataNext) {
+        nextId.value = dataNext.id
+        nextTitle.value = dataNext.title
+      }
 
       const { data: dataPrev, error: queryPrevError } = await supabase
         .from('til')
-        .select('id')
+        .select('id, title')
         .lt('created_at', til.value.created_at)
         .order('created_at', { ascending: false })
         .limit(1)
@@ -63,7 +70,10 @@ async function loadTil() {
 
       if (queryPrevError) {
         // TODO
-      } else if (dataPrev) prevId.value = dataPrev.id
+      } else if (dataPrev) {
+        prevId.value = dataPrev.id
+        prevTitle.value = dataPrev.title
+      }
     }
   } catch (err) {
     error.value = err instanceof Error ? err.message : 'Failed to load TIL entry'
@@ -103,6 +113,8 @@ watch(() => route.params.id, loadTil)
     <FootNav
       :prev-post-link="prevId ? `/til/${prevId}` : undefined"
       :next-post-link="nextId ? `/til/${nextId}` : undefined"
+      :prev-post-title="prevTitle ? prevTitle : undefined"
+      :next-post-title="nextTitle ? nextTitle : undefined"
       index-page-link="/til"
     />
   </div>

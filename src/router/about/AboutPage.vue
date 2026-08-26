@@ -39,8 +39,8 @@ async function copyEmail() {
       <li>Learning Rust - recently built a regex engine from scratch.</li>
       <li>Studying toward JLPT N2.</li>
       <li>
-        Visit <RouterLink class="underline" to="/til">Today I Learned</RouterLink> to explore things
-        I learned recently.
+        Visit <RouterLink to="/til">Today I Learned</RouterLink> or
+        <RouterLink to="/blogs">Blogs</RouterLink> to explore things I learned recently.
       </li>
     </ul>
   </div>
@@ -51,15 +51,14 @@ async function copyEmail() {
     <ul class="list-disc list-inside">
       <li>
         <a
-          class="underline"
           target="_blank"
           href="https://drive.google.com/file/d/1N_HiuTZoT6SnpatahC7JD9-Wgmqu6SGu/view?usp=sharing"
           >English</a
         >
       </li>
-      <li>
+      <!-- <li>
         <a>Japanese</a>
-      </li>
+      </li> -->
     </ul>
     <p>
       You can contact me via my email at
@@ -67,3 +66,9 @@ async function copyEmail() {
     </p>
   </div>
 </template>
+
+<style lang="css" scoped>
+a {
+  color: #3366cc;
+}
+</style>
