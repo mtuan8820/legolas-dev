@@ -102,9 +102,14 @@ watch(() => route.params.id, loadTil)
 
       <!-- Tags -->
       <div v-if="til.tags" class="flex gap-2">
-        <span v-for="tag in til.tags" :key="tag" class="bg-[#e3e3e3] px-3 py-1 text-sm rounded">
+        <RouterLink
+          v-for="tag in til.tags"
+          :key="tag"
+          :to="{ path: '/til', query: { tag } }"
+          class="bg-[#e3e3e3] px-3 py-1 text-sm rounded underline hover:bg-[#d0d0d0] transition"
+        >
           {{ tag }}
-        </span>
+        </RouterLink>
       </div>
     </div>
 
