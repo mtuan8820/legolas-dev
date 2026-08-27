@@ -34,9 +34,8 @@ html {
 }
 
 main {
-  width: 50vw;
-  min-width: var(--bodyMinWidth);
-  margin: auto;
+  @apply lg:w-[50vw] lg:min-w-(--bodyMinWidth) lg:m-auto;
+  @apply pl-5 pr-5;
 }
 
 main.main--wide {
@@ -47,8 +46,8 @@ main.main--wide {
 h1 {
   font-size: 2em;
   font-weight: 700;
-  margin-top: var(--note05);
   margin-bottom: var(--note00);
+  @apply lg:mt-(--note05);
 }
 
 h2 {
@@ -175,4 +174,8 @@ blockquote {
   quotes: inherit;
   text-align: justify;
   margin-left: 1.5em;
+}
+
+#app {
+  @apply flex flex-col;
 }
