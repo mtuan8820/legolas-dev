@@ -90,7 +90,7 @@ watch(() => route.params.slug, loadBlog)
   <div v-else-if="blog">
     <h1>{{ blog.title }}</h1>
 
-    <div class="flex justify-between mt-4 ml-48 mr-10">
+    <div class="datetimetag">
       <!-- Datetime -->
       <div class="text-[#555] font-extrabold">
         {{ datetimeFormatter.format(new Date(blog.updated_at ?? '')) }}
@@ -122,18 +122,29 @@ watch(() => route.params.slug, loadBlog)
 </template>
 
 <style scoped>
+@reference "@/index.css";
+
 h1 {
-  margin-left: 12rem;
+  @apply lg:ml-48;
   font-family: 'Caslon-SC';
   text-transform: uppercase;
 }
 
+.datetimetag {
+  @apply flex justify-between mt-4;
+  @apply lg:ml-48 lg:mr-10;
+}
+
+.content {
+  @apply lg:ml-48 lg:mr-10 lg:pt-12 lg:pb-72;
+  position: relative;
+  --space-between-chapter: var(--note10);
+}
+
 .content > :deep(h2) {
-  float: left;
-  margin-left: -13rem;
+  @apply float-none;
+  @apply lg:float-left lg:-ml-52 lg:w-44 lg:text-end;
   margin-top: calc(var(--space-between-chapter) - var(--note01));
-  text-align: end;
-  width: 11rem;
   font-size: var(--note03);
   text-transform: uppercase;
 }
@@ -143,10 +154,7 @@ h1 {
 }
 
 .content > :deep(h3) {
-  position: absolute;
-  left: -13rem;
-  text-align: end;
-  width: 11rem;
+  @apply lg:absolute lg:-left-52 lg:text-end lg:w-44;
   margin-top: 0;
   text-transform: lowercase;
   border-top: solid 3px #333;
@@ -154,14 +162,6 @@ h1 {
   line-height: 1.2;
   padding-top: 5px;
   font-weight: bold;
-}
-
-.content {
-  padding: 3rem 0 18rem 0;
-  margin-left: 12rem;
-  margin-right: 2.5rem;
-  position: relative;
-  --space-between-chapter: var(--note10);
 }
 
 .content :deep(a) {

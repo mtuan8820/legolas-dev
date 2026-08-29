@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { onUnmounted, ref, watch } from 'vue'
 
+defineProps<{
+  /** Hide the persistent desktop sidebar (mobile menu button stays available). */
+  desktopHidden?: boolean
+}>()
+
 const isOpen = ref(false)
 
 watch(isOpen, (open) => {
@@ -31,7 +36,7 @@ onUnmounted(() => {
     id="default-sidebar"
     aria-label="Sidebar"
     class="z-50"
-    :class="isOpen ? 'translate-x-0' : '-translate-x-full'"
+    :class="[isOpen ? 'translate-x-0' : '-translate-x-full', desktopHidden && 'lg:hidden']"
   >
     <button
       type="button"

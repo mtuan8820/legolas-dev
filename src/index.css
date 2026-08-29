@@ -2,7 +2,7 @@
 @import './assets/fonts.css';
 
 @theme {
-  --fontRatio: calc(32 / 27);
+  --fontRatio: calc(32 / 27); /*1.1851*/
   --minFontSize: calc(16 / var(--fontRatio)) * 1px;
   --note00: clamp(var(--minFontSize), var(--fontSizeGrow), 1000000000px);
   --note01: calc(var(--note00) * var(--fontRatio));
@@ -26,6 +26,7 @@
 
 html {
   background: #f9f9f9;
+  overflow-x: hidden;
 }
 
 * {
@@ -39,12 +40,12 @@ main {
 }
 
 main.main--wide {
-  width: 100vw;
+  width: 100%;
   max-width: 1140px;
 }
 
 h1 {
-  font-size: 2em;
+  @apply lg:text-[2em] text-[1.6em];
   font-weight: 700;
   margin-bottom: var(--note00);
   @apply lg:mt-(--note05);
@@ -76,6 +77,23 @@ h4 {
   font-size: var(--note01);
   line-height: var(--note05);
   color: #555;
+}
+
+.text-lead {
+  font-size: 1.2em;
+}
+
+.ml-custom {
+  margin-left: 4rem;
+}
+
+@media (min-width: 64rem) {
+  .text-lead {
+    font-size: 1.5em;
+  }
+  .ml-custom {
+    margin-left: 10rem;
+  }
 }
 
 .router-link {
@@ -136,7 +154,10 @@ pre code {
 }
 
 table {
+  display: block;
   width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border-collapse: collapse;
   margin-bottom: var(--note06);
 }
