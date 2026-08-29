@@ -6,7 +6,7 @@ const route = useRoute()
 </script>
 
 <template>
-  <Sidebar v-if="!route.meta.hideSidebar" />
+  <Sidebar :desktop-hidden="!!route.meta.hideSidebar" />
   <main :class="{ 'main--wide': route.meta.hideSidebar }">
     <RouterView />
   </main>

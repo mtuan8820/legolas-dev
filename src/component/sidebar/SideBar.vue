@@ -1,5 +1,51 @@
+<script setup lang="ts">
+import { onUnmounted, ref, watch } from 'vue'
+
+defineProps<{
+  /** Hide the persistent desktop sidebar (mobile menu button stays available). */
+  desktopHidden?: boolean
+}>()
+
+const isOpen = ref(false)
+
+watch(isOpen, (open) => {
+  document.body.style.overflow = open ? 'hidden' : ''
+})
+
+onUnmounted(() => {
+  document.body.style.overflow = ''
+})
+</script>
+
 <template>
-  <aside class="fixed top-11.25 pb-11.25 left-0 h-full w-[25vw]">
+  <button
+    aria-controls="default-sidebar"
+    :aria-expanded="isOpen"
+    type="button"
+    class="text-heading bg-transparent box-border border border-transparent hover:bg-neutral-secondary-medium focus:ring-4 focus:ring-neutral-tertiary font-medium leading-5 rounded-base ms-3 mt-3 text-sm p-2 focus:outline-none inline-flex lg:hidden"
+    @click="isOpen = !isOpen"
+  >
+    <img src="@/assets/icons/menu-svgrepo-com.svg" alt="Menu" class="inline w-8 h-8" />
+  </button>
+  <div
+    v-if="isOpen"
+    class="fixed inset-0 z-40 bg-black/50 lg:hidden"
+    @click="isOpen = false"
+  ></div>
+  <aside
+    id="default-sidebar"
+    aria-label="Sidebar"
+    class="z-50"
+    :class="[isOpen ? 'translate-x-0' : '-translate-x-full', desktopHidden && 'lg:hidden']"
+  >
+    <button
+      type="button"
+      aria-label="Close sidebar"
+      class="absolute top-3 right-3 text-heading p-2 leading-none lg:hidden"
+      @click="isOpen = false"
+    >
+      ✕
+    </button>
     <div class="h-full w-full flex flex-col items-center gap-8">
       <div class="text-center">
         <h2 class="text-[1.4em] font-normal!">Legolas</h2>
@@ -66,14 +112,24 @@
       </div>
 
       <!-- Nav links -->
-      <nav class="w-[15vw] flex flex-1 flex-col px-2">
-        <RouterLink class="router-link" to="/blogs">Blogs</RouterLink>
-        <RouterLink class="router-link" to="/">About Me</RouterLink>
-        <RouterLink class="router-link" to="/projects">Projects</RouterLink>
-        <RouterLink class="router-link" to="/til">Today I Learned</RouterLink>
+      <nav class="w-full lg:w-[15vw] flex flex-1 flex-col px-2">
+        <RouterLink class="router-link" to="/blogs" @click="isOpen = false">Blogs</RouterLink>
+        <RouterLink class="router-link" to="/" @click="isOpen = false">About Me</RouterLink>
+        <RouterLink class="router-link" to="/projects" @click="isOpen = false">Projects</RouterLink>
+        <RouterLink class="router-link" to="/til" @click="isOpen = false"
+          >Today I Learned</RouterLink
+        >
       </nav>
 
       <div class="mb-11.25">©&nbsp;2026 Legolas</div>
     </div>
   </aside>
 </template>
+
+<style lang="css" scoped>
+@reference "@/index.css";
+aside {
+  @apply fixed bg-white top-0 left-0 w-full max-w-xs h-full transition-transform pt-5;
+  @apply lg:top-11.25 lg:pb-11.25 lg:w-[25vw] lg:max-w-none lg:pt-0 lg:bg-transparent lg:translate-x-0!;
+}
+</style>
