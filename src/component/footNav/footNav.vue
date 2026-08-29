@@ -33,10 +33,13 @@ defineProps<{
 </template>
 
 <style scoped>
+@reference "@/index.css";
+
 .toolbar {
   font-size: var(--note02);
   line-height: 1.25;
   font-feature-settings: 'c2sc';
+  @apply mt-20;
 }
 
 nav {
