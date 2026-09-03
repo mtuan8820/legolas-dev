@@ -22,16 +22,12 @@ onUnmounted(() => {
     aria-controls="default-sidebar"
     :aria-expanded="isOpen"
     type="button"
-    class="text-heading bg-transparent box-border border border-transparent hover:bg-neutral-secondary-medium focus:ring-4 focus:ring-neutral-tertiary font-medium leading-5 rounded-base ms-3 mt-3 text-sm p-2 focus:outline-none inline-flex lg:hidden"
+    class="text-heading bg-[#f9f9f9] box-border border border-transparent hover:bg-neutral-secondary-medium focus:ring-4 focus:ring-neutral-tertiary font-medium leading-5 rounded-base ms-3 mt-3 text-sm p-2 focus:outline-none inline-flex sticky top-0 z-30 lg:hidden"
     @click="isOpen = !isOpen"
   >
     <img src="@/assets/icons/menu-svgrepo-com.svg" alt="Menu" class="inline w-8 h-8" />
   </button>
-  <div
-    v-if="isOpen"
-    class="fixed inset-0 z-40 bg-black/50 lg:hidden"
-    @click="isOpen = false"
-  ></div>
+  <div v-if="isOpen" class="fixed inset-0 z-40 bg-black/50 lg:hidden" @click="isOpen = false"></div>
   <aside
     id="default-sidebar"
     aria-label="Sidebar"

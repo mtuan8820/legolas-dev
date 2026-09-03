@@ -39,8 +39,9 @@ async function copyEmail() {
       <li>Learning Rust - recently built a regex engine from scratch.</li>
       <li>Studying toward JLPT N2.</li>
       <li>
-        Visit <RouterLink to="/til">Today I Learned</RouterLink> or
-        <RouterLink to="/blogs">Blogs</RouterLink> to explore things I learned recently.
+        Visit <RouterLink to="/til" class="underline">Today I Learned</RouterLink> or
+        <RouterLink to="/blogs" class="underline">Blogs</RouterLink> to explore things I learned
+        recently.
       </li>
     </ul>
   </div>

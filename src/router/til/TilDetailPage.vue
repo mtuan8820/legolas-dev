@@ -87,7 +87,7 @@ watch(() => route.params.id, loadTil)
 </script>
 
 <template>
-  <div v-if="loading" class="mt-2.5"><p>Loading...</p></div>
+  <div v-if="loading" class="mt-2.5"><p>Loading…</p></div>
 
   <div v-else-if="error" class="text-red-600">Error: {{ error }}</div>
 
@@ -101,7 +101,7 @@ watch(() => route.params.id, loadTil)
       </div>
 
       <!-- Tags -->
-      <div v-if="til.tags" class="flex gap-2">
+      <div v-if="til.tags" class="flex flex-wrap gap-2">
         <RouterLink
           v-for="tag in til.tags"
           :key="tag"
