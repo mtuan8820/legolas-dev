@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import FootNav from '@/component/footNav/footNav.vue'
+import PostDetail from '@/component/postDetail/postDetail.vue'
 import { supabase, type Blog } from '@/util/supabase'
 import MarkdownIt from 'markdown-it'
 import { onMounted, ref, watch } from 'vue'
@@ -87,38 +87,18 @@ watch(() => route.params.slug, loadBlog)
   <div v-if="loading" class="mt-2.5"><p>Loading…</p></div>
   <div v-else-if="error" class="text-red-600">Error: {{ error }}</div>
 
-  <div v-else-if="blog">
-    <h1>{{ blog.title }}</h1>
-
-    <div class="datetimetag">
-      <!-- Datetime -->
-      <div class="text-[#555] font-extrabold">
-        {{ datetimeFormatter.format(new Date(blog.updated_at ?? '')) }}
-      </div>
-
-      <!-- Tags -->
-      <div v-if="blog.tags" class="flex flex-wrap gap-2">
-        <RouterLink
-          v-for="tag in blog.tags"
-          :key="tag"
-          :to="{ path: '/blogs', query: { tag } }"
-          class="bg-[#e3e3e3] px-3 py-1 text-sm rounded underline hover:bg-[#d0d0d0] transition"
-        >
-          {{ tag }}
-        </RouterLink>
-      </div>
-    </div>
-
-    <div class="content" v-html="md.render(blog.content)"></div>
-
-    <FootNav
-      :prev-post-link="prevSlug ? `/blogs/${prevSlug}` : undefined"
-      :next-post-link="nextSlug ? `/blogs/${nextSlug}` : undefined"
-      :prev-post-title="prevTitle ? prevTitle : undefined"
-      :next-post-title="nextTitle ? nextTitle : undefined"
-      index-page-link="/blogs"
-    />
-  </div>
+  <PostDetail
+    v-if="blog"
+    :title="blog.title"
+    :post-content="md.render(blog.content)"
+    :date="datetimeFormatter.format(new Date(blog.updated_at ?? ''))"
+    table-name="blogs"
+    :tags="blog.tags"
+    :prev-slug="prevSlug"
+    :prev-title="prevTitle"
+    :next-slug="nextSlug"
+    :next-title="nextTitle"
+  />
 </template>
 
 <style scoped>
