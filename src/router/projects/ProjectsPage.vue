@@ -33,7 +33,7 @@ onMounted(() => fetchProjects())
   <div>
     <h1>Projects</h1>
     <p>These are some of the projects I have worked on.</p>
-    <p v-if="loading" class="mt-2.5">Loading...</p>
+    <p v-if="loading" class="mt-2.5">Loading…</p>
     <div v-if="error" class="error">
       Error: {{ error }}
       <button @click="fetchProjects">Try later</button>
@@ -44,7 +44,7 @@ onMounted(() => fetchProjects())
         <hr class="mb-2.5 mt-7.5" />
 
         <div class="text-left hyphens-auto">
-          <div class="float-left mr-2 mb-1.25 text-2xl font-bold max-w-[25%]">
+          <div class="dropcap">
             <a
               v-if="project.homepage_url"
               :href="project.homepage_url"
@@ -72,7 +72,7 @@ onMounted(() => fetchProjects())
           </a>
 
           <!-- Techonologies List -->
-          <div v-if="project.technologies" class="flex gap-2.5">
+          <div v-if="project.technologies" class="flex flex-wrap gap-2.5">
             <span
               v-for="tech in project.technologies"
               :key="tech"
@@ -86,3 +86,13 @@ onMounted(() => fetchProjects())
     </ul>
   </div>
 </template>
+
+<style lang="css" scoped>
+.dropcap {
+  float: left;
+  font-size: var(--note05);
+  line-height: 1;
+  font-weight: bold;
+  margin-right: 9px;
+}
+</style>

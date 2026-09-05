@@ -84,7 +84,7 @@ watch(() => route.params.slug, loadBlog)
 </script>
 
 <template>
-  <div v-if="loading" class="mt-2.5"><p>Loading...</p></div>
+  <div v-if="loading" class="mt-2.5"><p>Loading…</p></div>
   <div v-else-if="error" class="text-red-600">Error: {{ error }}</div>
 
   <div v-else-if="blog">
@@ -97,7 +97,7 @@ watch(() => route.params.slug, loadBlog)
       </div>
 
       <!-- Tags -->
-      <div v-if="blog.tags" class="flex gap-2">
+      <div v-if="blog.tags" class="flex flex-wrap gap-2">
         <RouterLink
           v-for="tag in blog.tags"
           :key="tag"

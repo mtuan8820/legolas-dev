@@ -131,7 +131,7 @@ watch([() => route.params.page, () => route.query.tag], loadPage)
     <h1 v-else>{{ title }}</h1>
     <h4 class="mb-0! mt7.5!">POSTS</h4>
     <hr class="mb-2.5 bg-[black] border-0 h-px" />
-    <p v-if="loading">Loading {{ title.toLowerCase() }}...</p>
+    <p v-if="loading">Loading {{ title.toLowerCase() }}…</p>
     <div v-if="error" class="text-red-600">Error: {{ error }}</div>
 
     <ul v-else-if="items.length > 0">
@@ -140,11 +140,11 @@ watch([() => route.params.page, () => route.query.tag], loadPage)
           <RouterLink
             v-if="resolveDetailPath(item)"
             :to="{ path: resolveDetailPath(item)! }"
-            class="block truncate"
+            class="block line-clamp-2 lg:line-clamp-1"
           >
             {{ displayTitle(item) }}
           </RouterLink>
-          <span v-else class="block truncate">{{ displayTitle(item) }}</span>
+          <span v-else class="block line-clamp-2 lg:line-clamp-1">{{ displayTitle(item) }}</span>
         </h2>
 
         <div class="flex justify-between">
@@ -152,7 +152,7 @@ watch([() => route.params.page, () => route.query.tag], loadPage)
           <div class="text-[#555]">{{ formatDate(item.updated_at ?? item.created_at) }}</div>
 
           <!-- tags -->
-          <div v-if="item.tags" class="flex gap-2.5">
+          <div v-if="item.tags" class="flex flex-wrap gap-2.5">
             <RouterLink
               v-for="tag in item.tags"
               :key="tag"

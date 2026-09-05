@@ -13,7 +13,7 @@ defineProps<{
     <!-- Prev Button -->
     <div class="w-[50%] border-r border-gray-300">
       <RouterLink v-if="$props.prevPostLink" :to="$props.prevPostLink"
-        >← {{ prevPostTitle }}</RouterLink
+        ><span class="line-clamp-2">← {{ prevPostTitle }}</span></RouterLink
       >
       <RouterLink v-else to="/blogs">Home</RouterLink>
     </div>
@@ -26,7 +26,7 @@ defineProps<{
     <!-- Next Button -->
     <div class="w-[50%] text-right">
       <RouterLink v-if="$props.nextPostLink" :to="$props.nextPostLink"
-        >{{ nextPostTitle }} →</RouterLink
+        ><span class="line-clamp-2">{{ nextPostTitle }} →</span></RouterLink
       >
     </div>
   </nav>
@@ -36,10 +36,9 @@ defineProps<{
 @reference "@/index.css";
 
 .toolbar {
-  font-size: var(--note02);
   line-height: 1.25;
   font-feature-settings: 'c2sc';
-  @apply mt-20;
+  @apply mt-20 text-(length:--note01) lg:text-(length:--note02);
 }
 
 nav {
@@ -51,6 +50,10 @@ a {
   height: 100%;
   display: block;
   padding: 0.5em 0.5em 1em 0.5em;
+  font-family: heliotrope-caps;
+}
+
+span {
   font-family: heliotrope-caps;
 }
 
