@@ -15,7 +15,7 @@ defineProps<{
       <RouterLink v-if="$props.prevPostLink" :to="$props.prevPostLink"
         ><span class="line-clamp-2">← {{ prevPostTitle }}</span></RouterLink
       >
-      <RouterLink v-else to="/blogs">Home</RouterLink>
+      <RouterLink v-else to="/">Home</RouterLink>
     </div>
 
     <!-- To index button -->
