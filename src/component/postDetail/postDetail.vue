@@ -42,11 +42,11 @@ defineProps<Props>()
     <div class="content" v-html="postContent"></div>
 
     <FootNav
-      :prev-post-link="prevSlug ? `/blogs/${prevSlug}` : undefined"
-      :next-post-link="nextSlug ? `/blogs/${nextSlug}` : undefined"
+      :prev-post-link="prevSlug ? prevSlug : undefined"
+      :next-post-link="nextSlug ? nextSlug : undefined"
       :prev-post-title="prevTitle ? prevTitle : undefined"
       :next-post-title="nextTitle ? nextTitle : undefined"
-      index-page-link="/blogs"
+      :index-page-link="`/${tableName}`"
     />
   </div>
 </template>

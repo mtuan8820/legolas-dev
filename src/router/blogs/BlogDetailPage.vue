@@ -54,8 +54,11 @@ async function loadBlog() {
       if (queryNextError) {
         // TODO: think about how to handle this
       } else if (dataNext) {
-        nextSlug.value = dataNext.slug
+        nextSlug.value = `/blogs/${dataNext.slug}`
         nextTitle.value = dataNext.title
+      } else {
+        nextSlug.value = '/til'
+        nextTitle.value = 'Explore my Today I Learned'
       }
       const { data: dataPrev, error: queryPrevError } = await supabase
         .from('blogs')
@@ -69,6 +72,7 @@ async function loadBlog() {
         // TODO
       } else if (dataPrev) {
         prevSlug.value = dataPrev.slug
+        prevSlug.value = `/blogs/${prevSlug.value}`
         prevTitle.value = dataPrev.title
       }
     }
@@ -100,105 +104,3 @@ watch(() => route.params.slug, loadBlog)
     :next-title="nextTitle"
   />
 </template>
-
-<style scoped>
-@reference "@/index.css";
-
-h1 {
-  @apply lg:ml-48;
-  font-family: 'Caslon-SC';
-  text-transform: uppercase;
-}
-
-.datetimetag {
-  @apply flex justify-between mt-4;
-  @apply lg:ml-48 lg:mr-10;
-}
-
-.content {
-  @apply lg:ml-48 lg:mr-10 lg:pt-12 lg:pb-72;
-  position: relative;
-  --space-between-chapter: var(--note10);
-}
-
-.content > :deep(h2) {
-  @apply float-none;
-  @apply lg:float-left lg:-ml-52 lg:w-44 lg:text-end;
-  margin-top: calc(var(--space-between-chapter) - var(--note01));
-  font-size: var(--note03);
-  text-transform: uppercase;
-}
-
-.content > :deep(h2:first-of-type) {
-  margin-top: 0;
-}
-
-.content > :deep(h3) {
-  @apply lg:absolute lg:-left-52 lg:text-end lg:w-44;
-  margin-top: 0;
-  text-transform: lowercase;
-  border-top: solid 3px #333;
-  hyphens: none;
-  line-height: 1.2;
-  padding-top: 5px;
-  font-weight: bold;
-}
-
-.content :deep(a) {
-  color: #3366cc;
-}
-
-.content :deep(p) {
-  margin-bottom: var(--note00);
-}
-
-.content :deep(p:has(+ ul)) {
-  margin-bottom: 0;
-}
-
-.content :deep(hr:has(+ h3)) {
-  margin-top: 2em;
-  border: none;
-}
-
-.content :deep(h2 + hr) {
-  margin-top: var(--space-between-chapter);
-  border: none;
-}
-
-.content :deep(h2:first-of-type + hr) {
-  margin-top: 0;
-  border: none;
-}
-
-.content :deep(ul) {
-  list-style: disc;
-  list-style-position: inside;
-  margin-bottom: 0;
-}
-
-.content :deep(ul ul) {
-  padding-left: 1.25em;
-  list-style-type: circle;
-}
-
-.content :deep(ul ul ul) {
-  padding-left: 1.25em;
-  list-style-type: square;
-}
-
-.content :deep(strong) {
-  font-family: valkyrie-caps;
-  font-weight: normal;
-  text-transform: lowercase;
-}
-
-.content :deep(li) {
-  line-height: 1.618;
-}
-
-.content :deep(li > p) {
-  display: inline;
-  margin: 0;
-}
-</style>

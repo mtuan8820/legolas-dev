@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import FootNav from '@/component/footNav/footNav.vue'
+import PostDetail from '@/component/postDetail/postDetail.vue'
 import { supabase, type Til } from '@/util/supabase'
 import MarkdownIt from 'markdown-it'
 import { onMounted, ref, watch } from 'vue'
@@ -11,9 +11,9 @@ const til = ref<Til | null>(null)
 const error = ref<string | null>(null)
 const loading = ref(true)
 
-const nextId = ref<number | null>(null)
+const nextId = ref<string | null>(null)
 const nextTitle = ref<string | null>(null)
-const prevId = ref<number | null>(null)
+const prevId = ref<string | null>(null)
 const prevTitle = ref<string | null>(null)
 
 const datetimeFormatter = new Intl.DateTimeFormat('en-US', {
@@ -56,8 +56,11 @@ async function loadTil() {
       if (queryNextError) {
         // TODO: think about how to handle this
       } else if (dataNext) {
-        nextId.value = dataNext.id
+        nextId.value = `/til/${dataNext.id}`
         nextTitle.value = dataNext.title
+      } else {
+        nextId.value = '/blogs'
+        nextTitle.value = 'Explore my Blogs'
       }
 
       const { data: dataPrev, error: queryPrevError } = await supabase
@@ -71,7 +74,7 @@ async function loadTil() {
       if (queryPrevError) {
         // TODO
       } else if (dataPrev) {
-        prevId.value = dataPrev.id
+        prevId.value = `/til/${dataPrev.id}`
         prevTitle.value = dataPrev.title
       }
     }
@@ -92,35 +95,16 @@ watch(() => route.params.id, loadTil)
   <div v-else-if="error" class="text-red-600">Error: {{ error }}</div>
 
   <div v-else-if="til">
-    <h1>{{ til.title }}</h1>
-
-    <div class="flex justify-between mt-4">
-      <!-- Datetime -->
-      <div class="text-[#555] font-extrabold">
-        {{ datetimeFormatter.format(new Date(til.updated_at ?? til.created_at)) }}
-      </div>
-
-      <!-- Tags -->
-      <div v-if="til.tags" class="flex flex-wrap gap-2">
-        <RouterLink
-          v-for="tag in til.tags"
-          :key="tag"
-          :to="{ path: '/til', query: { tag } }"
-          class="bg-[#e3e3e3] px-3 py-1 text-sm rounded underline hover:bg-[#d0d0d0] transition"
-        >
-          {{ tag }}
-        </RouterLink>
-      </div>
-    </div>
-
-    <div class="mt-6" v-html="md.render(til.content)"></div>
-
-    <FootNav
-      :prev-post-link="prevId ? `/til/${prevId}` : undefined"
-      :next-post-link="nextId ? `/til/${nextId}` : undefined"
-      :prev-post-title="prevTitle ? prevTitle : undefined"
-      :next-post-title="nextTitle ? nextTitle : undefined"
-      index-page-link="/til"
+    <PostDetail
+      :next-slug="nextId"
+      :prev-slug="prevId"
+      :next-title="nextTitle"
+      :prev-title="prevTitle"
+      :post-content="md.render(til.content)"
+      table-name="til"
+      :title="til.title"
+      :tags="til.tags"
+      :date="datetimeFormatter.format(new Date(til.updated_at ?? til.created_at))"
     />
   </div>
 </template>
