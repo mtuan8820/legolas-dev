@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import FootNav from '@/component/footNav/footNav.vue'
+import { computed } from 'vue'
 
 interface Props {
   tableName: 'blogs' | 'til'
+  lang?: 'en' | 'ja'
   title: string
   tags: string[] | null
   postContent: string
@@ -13,7 +15,14 @@ interface Props {
   prevTitle?: string | null
 }
 
-defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), { lang: 'en' })
+
+// Base path of this post's own listing page, language-aware — used for the
+// "Top" link and for tag links so both stay within the current language.
+const basePath = computed(() => {
+  const base = `/${props.tableName}`
+  return props.lang === 'ja' ? `${base}/jp` : base
+})
 </script>
 
 <template>
@@ -31,7 +40,7 @@ defineProps<Props>()
         <RouterLink
           v-for="tag in tags"
           :key="tag"
-          :to="{ path: tableName === 'blogs' ? '/blogs' : '/til', query: { tag } }"
+          :to="{ path: basePath, query: { tag } }"
           class="bg-[#e3e3e3] px-3 py-1 text-sm rounded underline hover:bg-[#d0d0d0] transition"
         >
           {{ tag }}
@@ -46,7 +55,7 @@ defineProps<Props>()
       :next-post-link="nextSlug ? nextSlug : undefined"
       :prev-post-title="prevTitle ? prevTitle : undefined"
       :next-post-title="nextTitle ? nextTitle : undefined"
-      :index-page-link="`/${tableName}`"
+      :index-page-link="basePath"
     />
   </div>
 </template>

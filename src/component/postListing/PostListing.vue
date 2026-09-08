@@ -7,7 +7,6 @@ interface Props {
   tableName: 'blogs' | 'til'
   title: string
   pageSize?: number
-  detailRoute?: string // e.g., '/blogs/:slug' for blogs, undefined for TIL
   showExcerpt?: boolean
   callback?: () => string
 }
@@ -28,6 +27,9 @@ type ContentItem = {
   updated_at?: string
   created_at?: string
 }
+
+const route = useRoute()
+const lang = computed<'en' | 'ja'>(() => (route.meta.lang === 'ja' ? 'ja' : 'en'))
 
 const items = ref<ContentItem[]>([])
 const error = ref<string | null>(null)
@@ -53,14 +55,12 @@ function displayTitle(item: ContentItem): string {
 }
 
 function resolveDetailPath(item: ContentItem): string | undefined {
-  if (!props.detailRoute) return undefined
-  if (props.detailRoute.includes(':slug')) {
-    return item.slug ? props.detailRoute.replace(':slug', item.slug) : undefined
-  }
-  if (props.detailRoute.includes(':id')) {
-    return item.id !== undefined ? props.detailRoute.replace(':id', String(item.id)) : undefined
-  }
-  return undefined
+  let path = '/' + props.tableName + '/'
+  if (lang.value === 'ja') path += 'jp/'
+  const slug = props.tableName === 'blogs' ? item.slug : String(item.id)
+  path += slug
+
+  return path
 }
 
 async function fetchContent(params: { page: number; tag?: string }) {
@@ -86,6 +86,8 @@ async function fetchContent(params: { page: number; tag?: string }) {
       query = query.overlaps('tags', [params.tag])
     }
 
+    query = query.eq('language', lang.value)
+
     query = query.range(startOffset, endOffset)
 
     const { data, error: queryError, count } = await query
@@ -101,7 +103,6 @@ async function fetchContent(params: { page: number; tag?: string }) {
   }
 }
 
-const route = useRoute()
 const selectedTag = computed(() => (route.query.tag as string) || undefined)
 
 // Strips any existing "/page/N" suffix so we always build the target link
@@ -122,14 +123,25 @@ const loadPage = () => {
   fetchContent({ page: pageIndex.value, tag: selectedTag.value })
 }
 onMounted(loadPage)
-watch([() => route.params.page, () => route.query.tag], loadPage)
+watch([() => route.params.page, () => route.query.tag, () => route.meta.lang], loadPage)
 </script>
 
 <template>
   <div>
     <h1 v-if="selectedTag">Tag: {{ selectedTag }}</h1>
     <h1 v-else>{{ title }}</h1>
-    <h4 class="mb-0! mt7.5!">POSTS</h4>
+    <div class="flex justify-between mb-0! mt7.5!">
+      <h4 class="">POSTS</h4>
+      <div class="align-center">
+        [
+        <span v-if="lang === 'en'">en</span>
+        <RouterLink v-else :to="`/${tableName}`" class="underline">en</RouterLink>
+        |
+        <span v-if="lang === 'ja'">ja</span>
+        <RouterLink v-else :to="`/${tableName}/jp`" class="underline">ja</RouterLink>
+        ]
+      </div>
+    </div>
     <hr class="mb-2.5 bg-[black] border-0 h-px" />
     <p v-if="loading">Loading {{ title.toLowerCase() }}…</p>
     <div v-if="error" class="text-red-600">Error: {{ error }}</div>

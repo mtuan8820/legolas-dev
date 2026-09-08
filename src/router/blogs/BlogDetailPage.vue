@@ -2,10 +2,13 @@
 import PostDetail from '@/component/postDetail/postDetail.vue'
 import { supabase, type Blog } from '@/util/supabase'
 import MarkdownIt from 'markdown-it'
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
+const lang = computed<'en' | 'ja'>(() => (route.meta.lang === 'ja' ? 'ja' : 'en'))
+const blogsBasePath = computed(() => (lang.value === 'ja' ? '/blogs/jp' : '/blogs'))
+const tilBasePath = computed(() => (lang.value === 'ja' ? '/til/jp' : '/til'))
 
 const blog = ref<Blog | null>(null)
 const error = ref<string | null>(null)
@@ -36,6 +39,7 @@ async function loadBlog() {
       .from('blogs')
       .select('*')
       .eq('slug', route.params.slug as string)
+      .eq('language', lang.value)
       .single()
 
     if (queryError) {
@@ -46,6 +50,7 @@ async function loadBlog() {
       const { data: dataNext, error: queryNextError } = await supabase
         .from('blogs')
         .select('slug, title')
+        .eq('language', lang.value)
         .gt('created_at', blog.value.created_at)
         .order('created_at', { ascending: true })
         .limit(1)
@@ -54,15 +59,16 @@ async function loadBlog() {
       if (queryNextError) {
         // TODO: think about how to handle this
       } else if (dataNext) {
-        nextSlug.value = `/blogs/${dataNext.slug}`
+        nextSlug.value = `${blogsBasePath.value}/${dataNext.slug}`
         nextTitle.value = dataNext.title
       } else {
-        nextSlug.value = '/til'
+        nextSlug.value = tilBasePath.value
         nextTitle.value = 'Explore my Today I Learned'
       }
       const { data: dataPrev, error: queryPrevError } = await supabase
         .from('blogs')
         .select('slug, title')
+        .eq('language', lang.value)
         .lt('created_at', blog.value.created_at)
         .order('created_at', { ascending: false })
         .limit(1)
@@ -71,8 +77,7 @@ async function loadBlog() {
       if (queryPrevError) {
         // TODO
       } else if (dataPrev) {
-        prevSlug.value = dataPrev.slug
-        prevSlug.value = `/blogs/${prevSlug.value}`
+        prevSlug.value = `${blogsBasePath.value}/${dataPrev.slug}`
         prevTitle.value = dataPrev.title
       }
     }
@@ -97,6 +102,7 @@ watch(() => route.params.slug, loadBlog)
     :post-content="md.render(blog.content)"
     :date="datetimeFormatter.format(new Date(blog.updated_at ?? ''))"
     table-name="blogs"
+    :lang="lang"
     :tags="blog.tags"
     :prev-slug="prevSlug"
     :prev-title="prevTitle"
