@@ -2,10 +2,13 @@
 import PostDetail from '@/component/postDetail/postDetail.vue'
 import { supabase, type Til } from '@/util/supabase'
 import MarkdownIt from 'markdown-it'
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
+const lang = computed<'en' | 'ja'>(() => (route.meta.lang === 'ja' ? 'ja' : 'en'))
+const tilBasePath = computed(() => (lang.value === 'ja' ? '/til/jp' : '/til'))
+const blogsBasePath = computed(() => (lang.value === 'ja' ? '/blogs/jp' : '/blogs'))
 
 const til = ref<Til | null>(null)
 const error = ref<string | null>(null)
@@ -48,6 +51,7 @@ async function loadTil() {
       const { data: dataNext, error: queryNextError } = await supabase
         .from('til')
         .select('id, title')
+        .eq('language', lang.value)
         .gt('created_at', til.value.created_at)
         .order('created_at', { ascending: true })
         .limit(1)
@@ -56,16 +60,17 @@ async function loadTil() {
       if (queryNextError) {
         // TODO: think about how to handle this
       } else if (dataNext) {
-        nextId.value = `/til/${dataNext.id}`
+        nextId.value = `${tilBasePath.value}/${dataNext.id}`
         nextTitle.value = dataNext.title
       } else {
-        nextId.value = '/blogs'
+        nextId.value = blogsBasePath.value
         nextTitle.value = 'Explore my Blogs'
       }
 
       const { data: dataPrev, error: queryPrevError } = await supabase
         .from('til')
         .select('id, title')
+        .eq('language', lang.value)
         .lt('created_at', til.value.created_at)
         .order('created_at', { ascending: false })
         .limit(1)
@@ -74,7 +79,7 @@ async function loadTil() {
       if (queryPrevError) {
         // TODO
       } else if (dataPrev) {
-        prevId.value = `/til/${dataPrev.id}`
+        prevId.value = `${tilBasePath.value}/${dataPrev.id}`
         prevTitle.value = dataPrev.title
       }
     }
@@ -102,6 +107,7 @@ watch(() => route.params.id, loadTil)
       :prev-title="prevTitle"
       :post-content="md.render(til.content)"
       table-name="til"
+      :lang="lang"
       :title="til.title"
       :tags="til.tags"
       :date="datetimeFormatter.format(new Date(til.updated_at ?? til.created_at))"

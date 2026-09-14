@@ -2,9 +2,12 @@
 import { supabase, type Project } from '@/util/supabase'
 import { ref, onMounted } from 'vue'
 import { FunctionsHttpError } from '@supabase/supabase-js'
+import MarkdownIt from 'markdown-it'
 const projects = ref<Project[]>([])
 const loading = ref(true)
 const error = ref<string | null>(null)
+
+const md = new MarkdownIt({ html: true, linkify: true })
 
 async function fetchProjects() {
   loading.value = true
@@ -56,7 +59,7 @@ onMounted(() => fetchProjects())
             <span v-else>{{ project.title }}</span>
           </div>
 
-          {{ project.description }}
+          <div v-if="project.description" v-html="md.render(project.description)"></div>
         </div>
 
         <div class="flex justify-between mt-4">
@@ -90,7 +93,7 @@ onMounted(() => fetchProjects())
 <style lang="css" scoped>
 .dropcap {
   float: left;
-  font-size: var(--note05);
+  font-size: calc(2 * var(--note03));
   line-height: 1;
   font-weight: bold;
   margin-right: 9px;
