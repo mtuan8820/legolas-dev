@@ -26,7 +26,7 @@ const basePath = computed(() => {
 </script>
 
 <template>
-  <div>
+  <div :lang="lang">
     <h1>{{ title }}</h1>
 
     <div class="datetimetag">
