@@ -11,10 +11,26 @@ const routes = [
   { path: '/projects', component: ProjectsPage },
   { path: '/blogs', component: BlogsPage },
   { path: '/blogs/page/:page', component: BlogsPage, props: true },
+  { path: '/blogs/jp', component: BlogsPage, meta: { lang: 'ja' } },
+  { path: '/blogs/jp/page/:page', component: BlogsPage, props: true, meta: { lang: 'ja' } },
   { path: '/blogs/:slug', component: BlogDetailPage, props: true, meta: { hideSidebar: true } },
+  {
+    path: '/blogs/jp/:slug',
+    component: BlogDetailPage,
+    props: true,
+    meta: { lang: 'ja', hideSidebar: true },
+  },
   { path: '/til', component: TilPage },
+  { path: '/til/jp', component: TilPage, meta: { lang: 'ja' } },
   { path: '/til/page/:page', component: TilPage, props: true },
+  { path: '/til/jp/page/:page', component: TilPage, props: true, meta: { lang: 'ja' } },
   { path: '/til/:id', component: TilDetailPage, props: true, meta: { hideSidebar: true } },
+  {
+    path: '/til/jp/:id',
+    component: TilDetailPage,
+    props: true,
+    meta: { lang: 'ja', hideSidebar: true },
+  },
 ]
 
 const router = createRouter({

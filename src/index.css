@@ -116,6 +116,10 @@ p {
   text-align: left;
 }
 
+*:lang(ja) {
+  font-family: 'M PLUS Rounded 1c';
+}
+
 li {
   font-family: 'Caslon';
   font-size: var(--note02);
