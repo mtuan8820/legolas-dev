@@ -1,4 +1,4 @@
-﻿@import 'tailwindcss';
+@import 'tailwindcss';
 @import './assets/fonts.css';
 
 @theme {
@@ -22,10 +22,12 @@
   --bodyMinWidth: calc(100 / var(--fontRatio) * var(--note01) / 2);
   --bodyMinWidthVW: calc(100 / var(--fontRatio) * var(--note01VW) / 2);
   --fontSizeGrow: 1vw;
+
+  --abyss-blue: #2b396d;
 }
 
 html {
-  background: #f9f9f9;
+  background: #e4e4e4;
   overflow-x: hidden;
 }
 
@@ -41,7 +43,7 @@ main {
 
 main.main--wide {
   width: 100%;
-  max-width: 1140px;
+  max-width: 800px;
 }
 
 h1 {
@@ -111,7 +113,7 @@ p {
   font-size: var(--note02);
   line-height: 1.4;
   margin-bottom: var(--note06);
-  color: #17181b;
+  color: #0b0b0b;
   hyphens: auto;
   text-align: left;
 }
@@ -203,4 +205,8 @@ blockquote {
 
 #app {
   @apply flex flex-col;
+}
+
+@utility writing-vertical {
+  writing-mode: vertical-rl;
 }

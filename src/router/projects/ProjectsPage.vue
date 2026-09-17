@@ -2,12 +2,10 @@
 import { supabase, type Project } from '@/util/supabase'
 import { ref, onMounted } from 'vue'
 import { FunctionsHttpError } from '@supabase/supabase-js'
-import MarkdownIt from 'markdown-it'
+import { md } from '@/util/markdown'
 const projects = ref<Project[]>([])
 const loading = ref(true)
 const error = ref<string | null>(null)
-
-const md = new MarkdownIt({ html: true, linkify: true })
 
 async function fetchProjects() {
   loading.value = true
