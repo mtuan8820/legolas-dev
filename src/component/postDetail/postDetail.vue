@@ -23,10 +23,14 @@ const basePath = computed(() => {
   const base = `/${props.tableName}`
   return props.lang === 'ja' ? `${base}/jp` : base
 })
+
+// Japanese posts use the terminology layout (glossary table in the margin
+// column) instead of the default English margin-heading layout.
+const layout = computed(() => (props.lang === 'ja' ? 'terminology' : 'default'))
 </script>
 
 <template>
-  <div :lang="lang">
+  <div :lang="lang" :class="`layout-${layout}`">
     <h1>{{ title }}</h1>
 
     <div class="datetimetag">
@@ -47,7 +51,6 @@ const basePath = computed(() => {
         </RouterLink>
       </div>
     </div>
-
     <div class="content" v-html="postContent"></div>
 
     <FootNav
@@ -63,7 +66,7 @@ const basePath = computed(() => {
 <style scoped>
 @reference "@/index.css";
 
-h1 {
+.layout-default h1 {
   @apply lg:ml-48;
   font-family: 'Caslon-SC';
   text-transform: uppercase;
@@ -71,16 +74,22 @@ h1 {
 
 .datetimetag {
   @apply flex justify-between mt-4;
+}
+
+.layout-default .datetimetag {
   @apply lg:ml-48 lg:mr-10;
 }
 
 .content {
-  @apply lg:ml-48 lg:mr-10 lg:pt-12 lg:pb-72;
   position: relative;
   --space-between-chapter: var(--note10);
 }
 
-.content > :deep(h2) {
+.layout-default .content {
+  @apply lg:ml-48 lg:mr-10 lg:pt-12 lg:pb-72;
+}
+
+.layout-default .content > :deep(h2) {
   @apply float-none;
   @apply lg:float-left lg:-ml-52 lg:w-44 lg:text-end;
   margin-top: calc(var(--space-between-chapter) - var(--note01));
@@ -88,11 +97,11 @@ h1 {
   text-transform: uppercase;
 }
 
-.content > :deep(h2:first-of-type) {
+.layout-default .content > :deep(h2:first-of-type) {
   margin-top: 0;
 }
 
-.content > :deep(h3) {
+.layout-default .content > :deep(h3) {
   @apply lg:absolute lg:-left-52 lg:text-end lg:w-44;
   margin-top: 0;
   text-transform: lowercase;
@@ -101,6 +110,31 @@ h1 {
   line-height: 1.2;
   padding-top: 5px;
   font-weight: bold;
+}
+
+/* Terminology layout: headings stay in normal flow; a glossary table (JP/EN
+   terms) takes the margin column that h2/h3 occupy in the default layout. */
+.layout-terminology .content :deep(table:first-of-type) {
+  @apply lg:float-left lg:-ml-52 lg:w-44;
+  font-size: var(--note00);
+  margin-top: 0;
+}
+
+.layout-terminology .content > :deep(h2) {
+  @apply lg:float-none;
+}
+
+.layout-terminology .content > :deep(h2:not(:first-child) .chapter-num) {
+  @apply text-(--abyss-blue) font-[valkyrie-caps] text-(length:--note07) leading-(--note07);
+}
+
+.layout-terminology .content > :deep(h2:first-of-type) {
+  @apply lg:float-right lg:writing-vertical lg:text-7xl lg:ml-(--note00);
+  @apply font-[hina-mincho];
+}
+
+.layout-terminology .content > :deep(p) {
+  @apply text-justify;
 }
 
 .content :deep(a) {

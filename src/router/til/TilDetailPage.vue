@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import PostDetail from '@/component/postDetail/postDetail.vue'
 import { supabase, type Til } from '@/util/supabase'
-import MarkdownIt from 'markdown-it'
+import { md } from '@/util/markdown'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -24,8 +24,6 @@ const datetimeFormatter = new Intl.DateTimeFormat('en-US', {
   day: 'numeric',
   year: 'numeric',
 })
-
-const md = new MarkdownIt({ html: true, linkify: true })
 
 async function loadTil() {
   loading.value = true
